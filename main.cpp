@@ -4,7 +4,7 @@
 using namespace std;
 //Eduardo Antonio Fernandez Diaz
 
-void ShowInventory(int *p);
+void ShowInventory(int *p,bool ShowTotal=false);
 void AddProduct(int *p, int warehouse, int product, int quantity);
 bool CheckForWrongValues(int *p, int warehouse, int product, int quantity);
 void ShowStats(int *p);
@@ -15,8 +15,8 @@ int main()
     
     for(int i=0;i<4;++i){
         for(int j=0;j<5;++j){
-            //inventory[i][j]=(i*5)+j+1;//For testing purposes
-            inventory[i][j]=0;
+            inventory[i][j]=(i*5)+j+1;//For testing purposes
+            //inventory[i][j]=0;
         }
     }
     
@@ -37,24 +37,37 @@ int main()
         cin >> sentinel;
         system("clear");
     }while(sentinel!=-1);
-    
+    ShowInventory(ptr,true);
     return 0;
 }
 
-void ShowInventory(int *p){
-    //This function displays the actual inventory
+void ShowInventory(int *p, bool showTotals){
+    //This function displays the actual inventory    
     cout << "\t      Product" << endl;
-    cout << setw(2) << "Warehouse  1  2  3  4  5" << endl;
+    cout << setw(2) << "Warehouse  1  2  3  4  5";
+    if (showTotals==true) 
+        cout << "   Total"; cout << endl;
     cout << setw(2) << "---------  -------------" << endl;
+    int pTotal[5]={0};//will store the total of each product
     for(int i=0;i<4;++i){
-    cout << setw(5) << i + 1 << "\t  ";
+        cout << setw(5) << i + 1 << "\t  ";
+        int wTotal=0;//will store the total of products for each warehouse
         for(int j=0;j<5;++j){
             cout << setw(2) << *(p+i*5+j) << ' ';
+            wTotal+=*(p+i*5+j);
+            pTotal[j]+=*(p+i*5+j);
         }
+        if (showTotals==true) 
+            cout << "   " << wTotal;
         cout << endl;
     }
+    if (showTotals==true){
+            cout << endl << "  Total   ";
+            for(int j=0;j<5;++j){
+                cout << setw(2) << pTotal[j] << ' ';
+            }
+    }
     cout << endl;
-    
 }
 
 void AddProduct(int *p, int warehouse, int product, int quantity){
